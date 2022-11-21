@@ -1,0 +1,10 @@
+rootProject.ext {
+    nexus = [
+            releaseUrl : "http://localhost:8081/repository/maven-releases/",
+            snapshotUrl: "http://localhost:8081/repository/maven-snapshots/",
+            username   : "admin",
+            password   : "admin123",
+            groupId    : "com.intertive.component",
+            packaging  : "arr",
+    ]
+}
