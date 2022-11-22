@@ -1,4 +1,4 @@
-package com.device.deviceinfosdk.rxjava;
+package com.fuerte.riskcontrol.threadpool;
 
 import android.os.Process;
 

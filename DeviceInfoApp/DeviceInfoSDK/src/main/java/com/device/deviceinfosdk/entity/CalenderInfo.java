@@ -1,4 +1,4 @@
-package com.device.deviceinfosdk.entity;
+package com.fuerte.riskcontrol.entity;
 
 import com.google.android.gms.common.internal.Objects;
 

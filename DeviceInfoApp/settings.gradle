@@ -12,18 +12,19 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io'}
 
-//        maven {
-//            allowInsecureProtocol true
-//            url 'http://localhost:8081/repository/maven-releases/'
-//        }
-//
-//        maven {
-//            allowInsecureProtocol true
-//            url 'http://localhost:8081/repository/maven-snapshots/'
-//        }
+        maven {
+            allowInsecureProtocol true
+            url 'http://localhost:8081/repository/maven-releases/'
+        }
+
+        maven {
+            allowInsecureProtocol true
+            url 'http://localhost:8081/repository/maven-snapshots/'
+        }
 
     }
 }
 rootProject.name = "DeviceInfoApp"
 include ':app'
-include ':DeviceInfoSDK'
+//include ':DeviceInfoSDK'
+include ':lib_riskcontrol'

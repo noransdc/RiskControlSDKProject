@@ -1,4 +1,4 @@
-package com.device.deviceinfosdk.component;
+package com.fuerte.riskcontrol.component;
 
 import android.app.Activity;
 import android.app.Application;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-import com.device.deviceinfosdk.util.CollectionUtil;
+import com.fuerte.riskcontrol.util.CollectionUtil;
 
 import org.jetbrains.annotations.NotNull;
 

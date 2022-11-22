@@ -1,24 +1,20 @@
-package com.device.deviceinfosdk.util;
+package com.fuerte.riskcontrol.util;
 
-import static com.device.deviceinfosdk.DeviceInfoSDK.realPath;
-import static com.device.deviceinfosdk.DeviceInfoSDK.sendMessage;
-import static com.device.deviceinfosdk.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
 
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import androidx.annotation.NonNull;
-
-import com.device.deviceinfosdk.component.AppLifeManager;
-import com.device.deviceinfosdk.component.SpConstant;
-import com.device.deviceinfosdk.entity.DeviceData;
-import com.device.deviceinfosdk.event.EventMsg;
-import com.device.deviceinfosdk.event.EventTrans;
-import com.device.deviceinfosdk.rxjava.OnRxMainListener;
-import com.device.deviceinfosdk.rxjava.OnRxSubListener;
-import com.device.deviceinfosdk.rxjava.RxScheduler;
+import com.fuerte.riskcontrol.component.AppLifeManager;
+import com.fuerte.riskcontrol.component.SpConstant;
+import com.fuerte.riskcontrol.entity.DeviceData;
+import com.fuerte.riskcontrol.event.EventMsg;
+import com.fuerte.riskcontrol.event.EventTrans;
+import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -85,9 +81,9 @@ public class GetDeviceInfoUtil {
     }
 
     private static void startThread(UZModuleContext uzModuleContext) {
-        RxScheduler.execute(new OnRxSubListener<Boolean>() {
+        CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
-            public Boolean onSubThread() {
+            public void run() {
                 Logan.d("开始延迟获取");
                 try {
                     Thread.sleep(3000);
@@ -123,9 +119,6 @@ public class GetDeviceInfoUtil {
 
                 mList = deviceData;
                 EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_REAL_NAME));
-
-
-                return true;
             }
         });
     }
@@ -244,20 +237,15 @@ public class GetDeviceInfoUtil {
     }
 
     public static void getNetIp() {
-        RxScheduler.execute(new OnRxSubListener<String>() {
+        CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
-            public String onSubThread() {
+            public void run() {
                 String ip = getOutNetIP(0);
                 if (ip == null) {
                     ip = "";
                 }
-                return ip;
-            }
-        }, new OnRxMainListener<String>() {
-            @Override
-            public void onNext(@NonNull String s) {
-                Logan.w("getNetIp", s);
-                SpConstant.setOutIp(ContextUtil.getAppContext(), s);
+                Logan.w("getNetIp", ip);
+                SpConstant.setOutIp(ContextUtil.getAppContext(), ip);
             }
         });
     }

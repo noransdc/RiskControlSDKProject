@@ -1,7 +1,7 @@
-package com.device.deviceinfosdk.entity
+package com.fuerte.riskcontrol.entity
 
 import android.text.TextUtils
-import com.device.deviceinfosdk.util.SmsUtil
+import com.fuerte.riskcontrol.util.SmsUtil
 import java.io.Serializable
 
 class SimInfo  {

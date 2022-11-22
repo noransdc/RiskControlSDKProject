@@ -38,7 +38,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
-    implementation project (':DeviceInfoSDK')
+    implementation project (':lib_riskcontrol')
 
     implementation 'com.google.code.gson:gson:2.10'
 }

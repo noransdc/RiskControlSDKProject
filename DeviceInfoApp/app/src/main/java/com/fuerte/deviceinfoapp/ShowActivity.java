@@ -13,17 +13,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.device.deviceinfosdk.DeviceInfoSDK;
-import com.device.deviceinfosdk.event.EventMsg;
-import com.device.deviceinfosdk.event.EventTrans;
-import com.device.deviceinfosdk.util.GetAppListUtil;
-import com.device.deviceinfosdk.util.GetCalenderUtil;
-import com.device.deviceinfosdk.util.GetContactUtil;
-import com.device.deviceinfosdk.util.GetDeviceInfoUtil;
-import com.device.deviceinfosdk.util.GetLocationUtil;
-import com.device.deviceinfosdk.util.GetPhotoUtil;
-import com.device.deviceinfosdk.util.GetSmsUtil;
-import com.device.deviceinfosdk.util.GetWifiUtil;
+import com.fuerte.riskcontrol.DeviceInfoSDK;
+import com.fuerte.riskcontrol.event.EventMsg;
+import com.fuerte.riskcontrol.event.EventTrans;
+import com.fuerte.riskcontrol.util.GetAppListUtil;
+import com.fuerte.riskcontrol.util.GetCalenderUtil;
+import com.fuerte.riskcontrol.util.GetContactUtil;
+import com.fuerte.riskcontrol.util.GetDeviceInfoUtil;
+import com.fuerte.riskcontrol.util.GetLocationUtil;
+import com.fuerte.riskcontrol.util.GetPhotoUtil;
+import com.fuerte.riskcontrol.util.GetSmsUtil;
+import com.fuerte.riskcontrol.util.GetWifiUtil;
 
 
 public class ShowActivity extends AppCompatActivity implements EventTrans.OnEventTransListener {

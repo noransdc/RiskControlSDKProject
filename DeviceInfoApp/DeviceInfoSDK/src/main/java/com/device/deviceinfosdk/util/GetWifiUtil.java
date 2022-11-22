@@ -1,19 +1,16 @@
-package com.device.deviceinfosdk.util;
+package com.fuerte.riskcontrol.util;
 
-import static com.device.deviceinfosdk.DeviceInfoSDK.realPath;
-import static com.device.deviceinfosdk.DeviceInfoSDK.sendMessage;
-import static com.device.deviceinfosdk.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
+import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
 
 import android.app.Activity;
-import android.content.Context;
 
-import com.device.deviceinfosdk.component.AppLifeManager;
-import com.device.deviceinfosdk.entity.SmsInfo;
-import com.device.deviceinfosdk.entity.WifiListInfo;
-import com.device.deviceinfosdk.event.EventMsg;
-import com.device.deviceinfosdk.event.EventTrans;
-import com.device.deviceinfosdk.rxjava.OnRxSubListener;
-import com.device.deviceinfosdk.rxjava.RxScheduler;
+import com.fuerte.riskcontrol.component.AppLifeManager;
+import com.fuerte.riskcontrol.entity.WifiListInfo;
+import com.fuerte.riskcontrol.event.EventMsg;
+import com.fuerte.riskcontrol.event.EventTrans;
+import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -63,9 +60,9 @@ public class GetWifiUtil {
     }
 
     private static void startThread(UZModuleContext uzModuleContext) {
-        RxScheduler.execute(new OnRxSubListener<Boolean>() {
+        CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
-            public Boolean onSubThread() {
+            public void run() {
                 List<WifiListInfo> list = DeviceInfoUtil.getWifiList();
                 try {
                     String paramsUnescapeJson = JsonUtil.toJson(list);
@@ -96,8 +93,6 @@ public class GetWifiUtil {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                return true;
             }
         });
     }
