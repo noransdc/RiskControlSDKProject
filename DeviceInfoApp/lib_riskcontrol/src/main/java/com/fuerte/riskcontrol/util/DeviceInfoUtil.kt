@@ -1,6 +1,7 @@
 package com.fuerte.riskcontrol.util
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.usage.StorageStatsManager
 import android.bluetooth.BluetoothAdapter
 import android.content.ContentValues
@@ -131,6 +132,9 @@ object DeviceInfoUtil {
                 IMEI = getDevicesId()
             }
         }
+        if (TextUtils.isEmpty(IMEI)){
+            return "000000000000000"
+        }
         return IMEI
     }
 
@@ -248,7 +252,7 @@ object DeviceInfoUtil {
         windowManager?.defaultDisplay?.getRealMetrics(metrics)
         val width = metrics.widthPixels
         val height = metrics.heightPixels
-        return "$height * $width"
+        return "$width * $height"
     }
 
     fun getIPAddress(): String? {
@@ -426,17 +430,9 @@ object DeviceInfoUtil {
         val telephonyManager =
             ContextUtil.getAppContext().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
         telephonyManager?.let {
-            when (it.phoneType) {
-                TelephonyManager.PHONE_TYPE_NONE -> "NONE"
-                TelephonyManager.PHONE_TYPE_GSM -> "GSM"
-                TelephonyManager.PHONE_TYPE_CDMA -> "CDMA"
-                TelephonyManager.PHONE_TYPE_SIP -> "SIP"
-                else -> {
-                    return "NONE"
-                }
-            }
+            return it.phoneType.toString()
         }
-        return "NONE"
+        return "0"
     }
 
     @SuppressLint("MissingPermission")
@@ -606,6 +602,7 @@ object DeviceInfoUtil {
      * @return
      */
     @SuppressLint("PrivateApi")
+    @TargetApi(23)
     fun getMeidOnly(): String? {
         var meid: String? = ""
         try {

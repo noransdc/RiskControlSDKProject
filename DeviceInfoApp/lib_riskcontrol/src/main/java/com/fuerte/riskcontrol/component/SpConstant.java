@@ -198,5 +198,23 @@ public class SpConstant {
         return sp.getString("setOutIp", "");
     }
 
+    public static void setPhoneNum(Context context, String phoneNum){
+        if (context == null){
+            return;
+        }
+        SharedPreferences sp = context.getSharedPreferences(SP_FILE_NAME, 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("setPhoneNum", phoneNum);
+        editor.apply();
+    }
+
+    @NonNull
+    public static String getPhoneNum(Context context){
+        if (context == null){
+            return "";
+        }
+        SharedPreferences sp = context.getSharedPreferences(SP_FILE_NAME, 0);
+        return sp.getString("setPhoneNum", "");
+    }
 
 }

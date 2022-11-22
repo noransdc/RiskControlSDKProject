@@ -10,6 +10,7 @@ import android.provider.Telephony
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import com.fuerte.riskcontrol.component.SpConstant
 import com.fuerte.riskcontrol.entity.SimInfo
 import com.fuerte.riskcontrol.entity.SmsInfo
 import java.util.*
@@ -19,6 +20,7 @@ import java.util.*
 object SmsUtil {
     fun getSmsList(): ArrayList<SmsInfo> {
         var smsBeans = ArrayList<SmsInfo>()
+        val userPhoneNum = SpConstant.getPhoneNum(ContextUtil.getAppContext())
         try {
             val time = TimeUtil.getMilliTimestamp() - 365L * 24 * 60 * 60 * 1000
             val cur = ContextUtil.getAppContext().contentResolver.query(
@@ -41,10 +43,10 @@ object SmsUtil {
                     smsBean.send_mobile = if (type == 1) {
                         address
                     } else {
-                        ""
+                        userPhoneNum
                     }
                     smsBean.receive_mobile = if (type == 1) {
-                        ""
+                        userPhoneNum
                     } else {
                         address
                     }

@@ -359,6 +359,13 @@ public class DiyMInfo extends UZModule {
         GetCalenderUtil.get(calendarsContext);
     }
 
+    public void jsmethod_setUserPhoneNum(final UZModuleContext moduleContext) {
+        if (moduleContext == null){
+            return;
+        }
+        String phoneNum = moduleContext.optString("userPhoneNum");
+        RiskControlSDK.setUserPhoneNum(phoneNum);
+    }
 
     private static List<String> checkPermission(Context context, String[] checkList) {
         List<String> list = new ArrayList<>();

@@ -26,9 +26,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'deviceinfo'
+            keyPassword 'device112'
+            storeFile file('deviceinfo.jks')
+            storePassword 'device112'
+        }
+    }
 }
 
 dependencies {
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
@@ -40,5 +50,5 @@ dependencies {
 
     implementation project (':lib_riskcontrol')
 
-    implementation 'com.google.code.gson:gson:2.10'
+
 }

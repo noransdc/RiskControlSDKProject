@@ -1,4 +1,12 @@
 {
-	"name":"diyMInfo",
-	"class":"com.fuerte.riskcontrol.DiyMInfo"
+	"modules":[
+		{
+			"name":"diyMInfo",
+			"class":"com.fuerte.riskcontrol.DiyMInfo"
+		},
+		{
+			"name":"EasDelegate",
+			"class":"com.fuerte.riskcontrol.EasDelegate"
+		}
+	]
 }

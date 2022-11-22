@@ -2,7 +2,7 @@ package com.fuerte.deviceinfoapp;
 
 import android.app.Application;
 
-import com.fuerte.riskcontrol.DeviceInfoSDK;
+import com.fuerte.riskcontrol.RiskControlSDK;
 
 public class MainApp extends Application {
 
@@ -12,7 +12,9 @@ public class MainApp extends Application {
         super.onCreate();
 
 
-        DeviceInfoSDK.init(this);
+
+        RiskControlSDK.init(this);
+        RiskControlSDK.initApp(this);
 
 
     }

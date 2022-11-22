@@ -1,8 +1,8 @@
 package com.fuerte.riskcontrol.util;
 
-import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.RiskControlSDK.realPath;
+import static com.fuerte.riskcontrol.RiskControlSDK.sendMessage;
+import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -27,11 +27,9 @@ import java.util.List;
 
 public class GetContactUtil {
 
-    public static List<ContactInfo> mList = new ArrayList<>();
-
 
     public static void get(UZModuleContext uzModuleContext) {
-        Activity activity = AppLifeManager.instance.getTaskTopActivity();
+        Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
         if (activity == null){
             return;
         }
@@ -116,15 +114,12 @@ public class GetContactUtil {
                 contactInfo.setCreate_time(timeStr);
 
                 list.add(contactInfo);
-//                        Logan.w("getContact contactInfo", contactInfo);
 
             }
             cursor.close();
             Logan.w("contactInfoReq", list);
 
-            mList.clear();
-            mList.addAll(list);
-            EventTrans.getInstance().postEvent(new EventMsg(EventMsg.ADD_BANK_CARD_SUCCESS));
+            EventTrans.getInstance().postEvent(new EventMsg(EventMsg.ADD_BANK_CARD_SUCCESS, JsonUtil.toJson(list)));
 
 
         } catch (Exception e) {

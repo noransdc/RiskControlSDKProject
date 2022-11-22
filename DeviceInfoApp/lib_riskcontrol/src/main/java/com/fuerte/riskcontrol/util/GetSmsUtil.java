@@ -1,8 +1,8 @@
 package com.fuerte.riskcontrol.util;
 
-import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.RiskControlSDK.realPath;
+import static com.fuerte.riskcontrol.RiskControlSDK.sendMessage;
+import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 
 import android.app.Activity;
 
@@ -11,7 +11,6 @@ import com.fuerte.riskcontrol.entity.SmsInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
 import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
-import com.fuerte.riskcontrol.util.SmsUtil;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -26,11 +25,9 @@ import java.util.List;
 
 public class GetSmsUtil {
 
-    public static List<SmsInfo> mList = new ArrayList<>();
-
 
     public static void getSmsInfo(UZModuleContext uzModuleContext) {
-        Activity activity = AppLifeManager.instance.getTaskTopActivity();
+        Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
         if (activity == null){
             return;
         }
@@ -80,9 +77,7 @@ public class GetSmsUtil {
 
                 Logan.w("getSmsInfo", list);
 
-                mList.clear();
-                mList.addAll(list);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.USER_LEVEL_UPDATE));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.USER_LEVEL_UPDATE, JsonUtil.toJson(list)));
             }
         });
 

@@ -25,7 +25,7 @@ import java.util.List;
 public class AppLifeManager {
 
 
-    public static AppLifeManager instance;
+    private static AppLifeManager instance;
     private final List<WeakReference<Activity>> weakActivityList = new ArrayList<>();
     private int count = 0;
     private boolean isForeground = false;
@@ -104,6 +104,33 @@ public class AppLifeManager {
                 unregisterBatteryReceiver(activity);
             }
         });
+    }
+
+    public void addActivity(Activity activity){
+        if (activity == null){
+            return;
+        }
+        if (weakActivityList != null){
+            weakActivityList.add(new WeakReference<>(activity));
+        }
+//                LanguageUtil.onActivityLifeCallback(activity);
+        registerBatteryReceiver(activity);
+    }
+
+    public void removeActivity(Activity activity){
+        if (activity == null){
+            return;
+        }
+        if (CollectionUtil.isNullOrEmpty(weakActivityList)){
+            return;
+        }
+        for (int i = weakActivityList.size() - 1; i >= 0; i--) {
+            WeakReference<Activity> reference = weakActivityList.get(i);
+            if (reference != null && reference.get() == activity){
+                weakActivityList.remove(reference);
+            }
+        }
+        unregisterBatteryReceiver(activity);
     }
 
     public boolean isForeground(){

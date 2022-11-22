@@ -180,6 +180,6 @@
 -keep class androidx.arch.core.** { *; }
 
 
-#-keep class com.fuerte.riskcontrol.DeviceInfoSDK
--keep public class com.fuerte.riskcontrol.DeviceInfoSDK { *; }
+-keep public class com.fuerte.riskcontrol.RiskControlSDK { *; }
 -keep public class com.fuerte.riskcontrol.DiyMInfo { *; }
+-keep public class com.fuerte.riskcontrol.EasDelegate { *; }

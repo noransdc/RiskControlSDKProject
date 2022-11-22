@@ -22,11 +22,12 @@ public class BatteryReceiver extends BroadcastReceiver {
         if (current - lastTime < 15000){
             return;
         }
+        lastTime = current;
 
         int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
         int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1);
-        int temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) / 10;
+        int temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1);
         String technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
 
         try {
@@ -50,7 +51,6 @@ public class BatteryReceiver extends BroadcastReceiver {
         SpConstant.setTemperature(context, String.valueOf(temperature));
         SpConstant.setTechnology(context, technology);
 
-
-
     }
+
 }

@@ -10,19 +10,8 @@ public class LocationInfo {
     private String location ="";//当前位置名称
     private String gps_address_province ="";//gps解析出来的省 sublocality
     private String gps_address_city ="";//gps解析出来的城市 locailty
-    private String gps_address_street2 ="";//gps解析的地址 maddresslines
-    private String longtitude2 ="";//当前经度
     private String gps_address_street ="";//gps解析的地址 maddresslines
-    private String gps_address_city1 ="";//gps解析出来的城市 locailty
     private String gps_address_country;
-
-    public String getGps_address_country() {
-        return gps_address_country;
-    }
-
-    public void setGps_address_country(String gps_address_country) {
-        this.gps_address_country = gps_address_country;
-    }
 
     public String getGeo_time() {
         return geo_time;
@@ -72,22 +61,6 @@ public class LocationInfo {
         this.gps_address_city = gps_address_city;
     }
 
-    public String getGps_address_street2() {
-        return gps_address_street2;
-    }
-
-    public void setGps_address_street2(String gps_address_street2) {
-        this.gps_address_street2 = gps_address_street2;
-    }
-
-    public String getLongtitude2() {
-        return longtitude2;
-    }
-
-    public void setLongtitude2(String longtitude2) {
-        this.longtitude2 = longtitude2;
-    }
-
     public String getGps_address_street() {
         return gps_address_street;
     }
@@ -96,12 +69,12 @@ public class LocationInfo {
         this.gps_address_street = gps_address_street;
     }
 
-    public String getGps_address_city1() {
-        return gps_address_city1;
+    public String getGps_address_country() {
+        return gps_address_country;
     }
 
-    public void setGps_address_city1(String gps_address_city1) {
-        this.gps_address_city1 = gps_address_city1;
+    public void setGps_address_country(String gps_address_country) {
+        this.gps_address_country = gps_address_country;
     }
 
     @Override
@@ -113,11 +86,9 @@ public class LocationInfo {
                 ", location='" + location + '\'' +
                 ", gps_address_province='" + gps_address_province + '\'' +
                 ", gps_address_city='" + gps_address_city + '\'' +
-                ", gps_address_street2='" + gps_address_street2 + '\'' +
-                ", longtitude2='" + longtitude2 + '\'' +
                 ", gps_address_street='" + gps_address_street + '\'' +
-                ", gps_address_city1='" + gps_address_city1 + '\'' +
                 ", gps_address_country='" + gps_address_country + '\'' +
                 '}';
     }
+
 }

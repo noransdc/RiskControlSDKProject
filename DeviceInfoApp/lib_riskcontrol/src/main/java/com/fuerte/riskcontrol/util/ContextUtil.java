@@ -10,19 +10,15 @@ import android.content.Context;
 public class ContextUtil {
 
 
-    private static Application mApplication;
+    private static Context mApplication;
 
 
-    public static void init(Application app){
+    public static void init(Context app){
         mApplication = app;
     }
 
-    public static Application getApplication(){
-        return mApplication;
-    }
-
     public static Context getAppContext(){
-        return mApplication.getApplicationContext();
+        return mApplication;
     }
 
 }

@@ -1,9 +1,9 @@
 package com.fuerte.riskcontrol.util;
 
 
-import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.RiskControlSDK.realPath;
+import static com.fuerte.riskcontrol.RiskControlSDK.sendMessage;
+import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
@@ -29,10 +29,9 @@ import java.util.List;
 
 public class GetAppListUtil {
 
-    public static List<AppInfo> mList = new ArrayList<>();
 
     public static void get(UZModuleContext uzModuleContext) {
-        Activity activity = AppLifeManager.instance.getTaskTopActivity();
+        Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
         if (activity == null){
             return;
         }
@@ -55,7 +54,7 @@ public class GetAppListUtil {
         CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                PackageManager pm = ContextUtil.getApplication().getPackageManager();
+                PackageManager pm = ContextUtil.getAppContext().getPackageManager();
                 if (pm == null) {
                     return;
                 }
@@ -66,25 +65,21 @@ public class GetAppListUtil {
                 }
                 List<AppInfo> list = new ArrayList<>();
                 for (PackageInfo pckInfo : packages) {
-                    if ((pckInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                        //非系统应用
-                        AppInfo appInfo = new AppInfo();
-                        if (pckInfo.applicationInfo != null && pckInfo.applicationInfo.loadLabel(pm) != null) {
-                            appInfo.setAppName(pckInfo.applicationInfo.loadLabel(pm).toString());
-                        }
-                        appInfo.setInstallationTime(TimeUtil.timestampToStr(pckInfo.firstInstallTime, TimeUtil.TIME_FORMAT_YMD));
-                        appInfo.setLastUpdateTime(TimeUtil.timestampToStr(pckInfo.lastUpdateTime));
-                        appInfo.setPackageName(pckInfo.packageName);
-                        appInfo.setVersion(pckInfo.versionName);
-                        if ((pckInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                            //非系统
-                            appInfo.setIs_system("0");
-                        } else {
-                            appInfo.setIs_system("1");
-                        }
-                        list.add(appInfo);
-
+                    AppInfo appInfo = new AppInfo();
+                    if (pckInfo.applicationInfo != null && pckInfo.applicationInfo.loadLabel(pm) != null) {
+                        appInfo.setAppName(pckInfo.applicationInfo.loadLabel(pm).toString());
                     }
+                    appInfo.setInstallationTime(TimeUtil.timestampToStr(pckInfo.firstInstallTime, TimeUtil.TIME_FORMAT_YMD));
+                    appInfo.setLastUpdateTime(TimeUtil.timestampToStr(pckInfo.lastUpdateTime));
+                    appInfo.setPackageName(pckInfo.packageName);
+                    appInfo.setVersion(pckInfo.versionName);
+                    if ((pckInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                        //非系统
+                        appInfo.setIs_system("0");
+                    } else {
+                        appInfo.setIs_system("1");
+                    }
+                    list.add(appInfo);
                 }
 
                 String paramsUnescapeJson = JsonUtil.toJson(list);
@@ -107,9 +102,7 @@ public class GetAppListUtil {
 
                 Logan.w("getAppInfo", list);
 
-                mList.clear();
-                mList.addAll(list);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS, JsonUtil.toJson(list)));
             }
         });
 

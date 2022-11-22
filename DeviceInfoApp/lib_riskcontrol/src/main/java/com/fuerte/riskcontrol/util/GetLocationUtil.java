@@ -1,8 +1,8 @@
 package com.fuerte.riskcontrol.util;
 
-import static com.fuerte.riskcontrol.DeviceInfoSDK.realPath;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.sendMessage;
-import static com.fuerte.riskcontrol.DeviceInfoSDK.writeSDFile;
+import static com.fuerte.riskcontrol.RiskControlSDK.realPath;
+import static com.fuerte.riskcontrol.RiskControlSDK.sendMessage;
+import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,11 +37,9 @@ import java.util.Locale;
 @SuppressLint("MissingPermission")
 public class GetLocationUtil {
 
-    public static LocationInfo mList;
-
 
     public static void getLocationInfo(UZModuleContext uzModuleContext) {
-        Activity activity = AppLifeManager.instance.getTaskTopActivity();
+        Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
         if (activity == null){
             return;
         }
@@ -162,8 +160,7 @@ public class GetLocationUtil {
 
                         Logan.w("locationInfo", locationInfo);
 
-                        mList = locationInfo;
-                        EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SET_PASSWORD));
+                        EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SET_PASSWORD, JsonUtil.toJson(location)));
 
 
                     } catch (IOException e) {

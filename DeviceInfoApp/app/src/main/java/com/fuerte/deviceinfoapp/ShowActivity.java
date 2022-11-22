@@ -13,17 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fuerte.riskcontrol.DeviceInfoSDK;
+import com.fuerte.riskcontrol.RiskControlSDK;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
-import com.fuerte.riskcontrol.util.GetAppListUtil;
-import com.fuerte.riskcontrol.util.GetCalenderUtil;
-import com.fuerte.riskcontrol.util.GetContactUtil;
-import com.fuerte.riskcontrol.util.GetDeviceInfoUtil;
-import com.fuerte.riskcontrol.util.GetLocationUtil;
-import com.fuerte.riskcontrol.util.GetPhotoUtil;
-import com.fuerte.riskcontrol.util.GetSmsUtil;
-import com.fuerte.riskcontrol.util.GetWifiUtil;
 
 
 public class ShowActivity extends AppCompatActivity implements EventTrans.OnEventTransListener {
@@ -64,31 +56,31 @@ public class ShowActivity extends AppCompatActivity implements EventTrans.OnEven
 
             switch (json){
                 case "app":
-                    DeviceInfoSDK.getAppInfo();
+                    RiskControlSDK.getAppInfo();
                     break;
 
                 case "contact":
-                    DeviceInfoSDK.getContactInfo();
+                    RiskControlSDK.getContactInfo();
                     break;
 
                 case "device":
-                    DeviceInfoSDK.getDeviceInfo();
+                    RiskControlSDK.getDeviceInfo();
                     break;
 
                 case "location":
-                    DeviceInfoSDK.getLocationInfo();
+                    RiskControlSDK.getLocationInfo();
                     break;
 
                 case "album":
-                    DeviceInfoSDK.getPhotoInfo();
+                    RiskControlSDK.getPhotoInfo();
                     break;
 
                 case "sms":
-                    DeviceInfoSDK.getSmsInfo();
+                    RiskControlSDK.getSmsInfo();
                     break;
 
                 case "calender":
-                    DeviceInfoSDK.getCalenderInfo();
+                    RiskControlSDK.getCalenderInfo();
                     break;
 
                 default:
@@ -115,54 +107,26 @@ public class ShowActivity extends AppCompatActivity implements EventTrans.OnEven
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventTrans.getInstance().unRegister(this);
+
+    }
+
+    @Override
     public void onEventTrans(EventMsg eventMsg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                switch (eventMsg.getKey()){
-                    case EventMsg.LOGIN_SUCCESS:
-                        showTv.setText(JsonUtil.toJson(GetAppListUtil.mList));
-                        break;
-
-                    case EventMsg.MODIFY_NICKNAME:
-                        showTv.setText(JsonUtil.toJson(GetCalenderUtil.mList));
-                        break;
-
-                    case EventMsg.ADD_BANK_CARD_SUCCESS:
-                        showTv.setText(JsonUtil.toJson(GetContactUtil.mList));
-                        break;
-
-                    case EventMsg.MODIFY_REAL_NAME:
-                        showTv.setText(JsonUtil.toJson(GetDeviceInfoUtil.mList));
-                        break;
-
-                    case EventMsg.SET_PASSWORD:
-                        showTv.setText(JsonUtil.toJson(GetLocationUtil.mList));
-                        break;
-
-                    case EventMsg.GET_BALANCE:
-                        showTv.setText(JsonUtil.toJson(GetPhotoUtil.mList));
-                        break;
-
-                    case EventMsg.USER_LEVEL_UPDATE:
-                        showTv.setText(JsonUtil.toJson(GetSmsUtil.mList));
-                        break;
-
-                    case EventMsg.REGISTER_SUCCESS:
-                        showTv.setText(JsonUtil.toJson(GetWifiUtil.mList));
-                        break;
-                }
-
+                showTv.setText((String)eventMsg.getData());
 
             }
         });
-
-
-
-
-
-
-
     }
+
+
+
+
+
 }

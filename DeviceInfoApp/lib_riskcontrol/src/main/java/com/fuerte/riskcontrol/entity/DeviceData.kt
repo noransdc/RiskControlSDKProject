@@ -3,7 +3,7 @@ package com.fuerte.riskcontrol.entity
 import java.io.Serializable
 
 class DeviceData : Serializable {
-    var regDevice: String = "Android" //注册设备类型1: Laptop 2: Web 3: iOS 4: Android
+    var regDevice: String = "4" //注册设备类型1: Laptop 2: Web 3: iOS 4: Android
 
     var regWifiAddress: String = "" //注册wifi地址
     var wifiList: ArrayList<WifiListInfo>? = null //注册时环境wifi列表
