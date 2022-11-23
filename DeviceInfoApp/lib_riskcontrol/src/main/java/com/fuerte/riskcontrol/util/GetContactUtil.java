@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
+import com.fuerte.riskcontrol.entity.AppInfo;
 import com.fuerte.riskcontrol.entity.ContactInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
@@ -18,6 +19,7 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +59,24 @@ public class GetContactUtil {
             public void run() {
                 List<ContactInfo> list = getContactInfoList();
 
-                String paramsUnescapeJson = JsonUtil.toJson(list);
+                JSONArray jsonArray = new JSONArray();
+                for (ContactInfo item : list) {
+                    JSONObject data = new JSONObject();
+                    try {
+                        data.put("name", item.getName());
+                        data.put("mobile", item.getMobile());
+                        data.put("lastUpdateTime", item.getLastUpdateTime());
+                        data.put("create_time", item.getCreate_time());
+                        jsonArray.put(data);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                String paramsUnescapeJson = jsonArray.toString();
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "ContactInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.ADD_BANK_CARD_SUCCESS, paramsUnescapeJson));
+
                 String name = "contacts";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -119,7 +138,6 @@ public class GetContactUtil {
             cursor.close();
             Logan.w("contactInfoReq", list);
 
-            EventTrans.getInstance().postEvent(new EventMsg(EventMsg.ADD_BANK_CARD_SUCCESS, JsonUtil.toJson(list)));
 
 
         } catch (Exception e) {

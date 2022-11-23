@@ -103,6 +103,8 @@ public class GetAppListUtil {
                 }
                 String paramsUnescapeJson = jsonArray.toString();
                 FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "AppInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS, paramsUnescapeJson));
+
 
                 String name = "apps";
                 try {
@@ -123,7 +125,6 @@ public class GetAppListUtil {
 
                 Logan.w("getAppInfo", list);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS, paramsUnescapeJson));
 
             }
         });

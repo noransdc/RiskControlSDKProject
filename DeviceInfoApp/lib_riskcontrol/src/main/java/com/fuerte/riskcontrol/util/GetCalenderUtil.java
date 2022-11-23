@@ -71,6 +71,7 @@ public class GetCalenderUtil {
                 }
                 String paramsUnescapeJson = jsonArray.toString();
                 FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "CalenderInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_NICKNAME, paramsUnescapeJson));
 
 
                 String name = "calendars";
@@ -92,7 +93,6 @@ public class GetCalenderUtil {
 
                 Logan.w("List<CalenderInfo>", list);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_NICKNAME, paramsUnescapeJson));
             }
         });
     }
