@@ -20,7 +20,6 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,27 +83,7 @@ public class GetAppListUtil {
 
                 }
 
-                JSONArray jsonArray = new JSONArray();
-                for (AppInfo item : list) {
-                    JSONObject data = new JSONObject();
-                    try {
-                        data.put("appName", item.getAppName());
-                        data.put("packageName", item.getPackageName());
-                        data.put("version", item.getVersion());
-                        data.put("installationTime", item.getInstallationTime());
-                        data.put("lastUpdateTime", item.getLastUpdateTime());
-                        data.put("is_system", item.getIs_system());
-                        jsonArray.put(data);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                String paramsUnescapeJson = jsonArray.toString();
-                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "AppInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.APP_INFO, paramsUnescapeJson));
-
-
+                String paramsUnescapeJson = JsonSimpleUtil.listToJsonStr(list);
                 String name = "apps";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -123,7 +102,8 @@ public class GetAppListUtil {
                 sendMessage(uzModuleContext, true, 0, "getApps", "getApps", result, true);
 
                 Logan.w("getAppInfo", list);
-
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "AppInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.APP_INFO, paramsUnescapeJson));
 
             }
         });

@@ -140,25 +140,7 @@ public class GetLocationUtil {
                             }
                         }
 
-                        JSONObject data = new JSONObject();
-                        try {
-                            data.put("geo_time", locationInfo.getGeo_time());
-                            data.put("latitude", locationInfo.getLatitude());
-                            data.put("longtitude", locationInfo.getLongtitude());
-                            data.put("location", locationInfo.getLocation());
-                            data.put("gps_address_province", locationInfo.getGps_address_province());
-                            data.put("gps_address_city", locationInfo.getGps_address_city());
-                            data.put("gps_address_street", locationInfo.getGps_address_street());
-                            data.put("gps_address_country", locationInfo.getGps_address_country());
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        String infoUnescapeJson = data.toString();
-                        FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "locationInfo.txt", infoUnescapeJson);
-                        EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOCATION, infoUnescapeJson));
-
-
+                        String infoUnescapeJson = JsonSimpleUtil.objToJsonStr(locationInfo);
                         String name = "geoInfo";
                         try {
                             writeSDFile(name, infoUnescapeJson);
@@ -178,7 +160,8 @@ public class GetLocationUtil {
                         sendMessage(uzModuleContext, true, 0, "getGeoInfo", "getGeoInfo", result, true);
 
                         Logan.w("locationInfo", locationInfo);
-
+                        FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "locationInfo.txt", infoUnescapeJson);
+                        EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOCATION, infoUnescapeJson));
 
                     } catch (IOException e) {
                         e.printStackTrace();

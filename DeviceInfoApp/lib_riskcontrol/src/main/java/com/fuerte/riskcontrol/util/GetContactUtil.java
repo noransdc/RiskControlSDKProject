@@ -58,24 +58,7 @@ public class GetContactUtil {
             public void run() {
                 List<ContactInfo> list = getContactInfoList();
 
-                JSONArray jsonArray = new JSONArray();
-                for (ContactInfo item : list) {
-                    JSONObject data = new JSONObject();
-                    try {
-                        data.put("name", item.getName());
-                        data.put("mobile", item.getMobile());
-                        data.put("lastUpdateTime", item.getLastUpdateTime());
-                        data.put("create_time", item.getCreate_time());
-                        jsonArray.put(data);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                String paramsUnescapeJson = jsonArray.toString();
-                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "ContactInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.CONTACT, paramsUnescapeJson));
-
+                String paramsUnescapeJson = JsonSimpleUtil.listToJsonStr(list);
                 String name = "contacts";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -92,6 +75,11 @@ public class GetContactUtil {
                     e.printStackTrace();
                 }
                 sendMessage(uzModuleContext, true, 0, "getContacts", "getContacts", result, true);
+
+                Logan.w("contactInfoReq", list);
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "ContactInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.CONTACT, paramsUnescapeJson));
+
             }
         });
     }
@@ -135,9 +123,6 @@ public class GetContactUtil {
 
             }
             cursor.close();
-            Logan.w("contactInfoReq", list);
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -58,29 +58,7 @@ public class GetSmsUtil {
             public void run() {
                 List<SmsInfo> list = SmsUtil.INSTANCE.getSmsList();
 
-
-                JSONArray jsonArray = new JSONArray();
-                for (SmsInfo item : list) {
-                    JSONObject data = new JSONObject();
-                    try {
-                        data.put("send_mobile", item.getSend_mobile());
-                        data.put("receive_mobile", item.getReceive_mobile());
-                        data.put("sms_content", item.getSms_content());
-                        data.put("sms_type", item.getSms_type());
-                        data.put("send_time", item.getSend_time());
-                        data.put("contactor_name", item.getContactor_name());
-                        data.put("address", item.getAddress());
-                        jsonArray.put(data);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                String paramsUnescapeJson = jsonArray.toString();
-                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "SmsInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SMS, paramsUnescapeJson));
-
-
+                String paramsUnescapeJson = JsonSimpleUtil.listToJsonStr(list);
                 String name = "smss";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -99,6 +77,8 @@ public class GetSmsUtil {
                 sendMessage(uzModuleContext, true, 0, "getSmss", "getSmss", result, true);
 
                 Logan.w("getSmsInfo", list);
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "SmsInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SMS, paramsUnescapeJson));
 
             }
         });

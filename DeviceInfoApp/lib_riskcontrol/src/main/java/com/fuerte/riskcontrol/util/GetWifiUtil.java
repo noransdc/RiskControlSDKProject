@@ -7,6 +7,7 @@ import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 import android.app.Activity;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
+import com.fuerte.riskcontrol.entity.AppInfo;
 import com.fuerte.riskcontrol.entity.WifiListInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
@@ -16,6 +17,7 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,32 +63,29 @@ public class GetWifiUtil {
             @Override
             public void run() {
                 List<WifiListInfo> list = DeviceInfoUtil.getWifiList();
+
+                String paramsUnescapeJson = JsonSimpleUtil.listToJsonStr(list);
+                String name = "wifis";
                 try {
-                    String paramsUnescapeJson = JsonUtil.toJson(list);
-                    String name = "wifis";
-                    try {
-                        writeSDFile(name, paramsUnescapeJson);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    JSONObject result = new JSONObject();
-                    try {
-                        result.put("path", realPath);
-                        result.put("name", name);
-                        result.put("list", paramsUnescapeJson);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    sendMessage(uzModuleContext, true, 0, "getWifis", "getWifis", result, true);
-
-                    Logan.w("wifiList", list);
-
-                    EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOCATION, JsonUtil.toJson(list)));
-
-                } catch (Exception e) {
+                    writeSDFile(name, paramsUnescapeJson);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                JSONObject result = new JSONObject();
+                try {
+                    result.put("path", realPath);
+                    result.put("name", name);
+                    result.put("list", paramsUnescapeJson);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                sendMessage(uzModuleContext, true, 0, "getWifis", "getWifis", result, true);
+
+                Logan.w("wifiList", list);
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "WifiListInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.WIFI, paramsUnescapeJson));
+
             }
         });
     }

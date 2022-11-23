@@ -11,7 +11,10 @@ import android.provider.MediaStore;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
 import com.fuerte.riskcontrol.component.SpConstant;
+import com.fuerte.riskcontrol.entity.DeviceBattery;
 import com.fuerte.riskcontrol.entity.DeviceData;
+import com.fuerte.riskcontrol.entity.SensorListInfo;
+import com.fuerte.riskcontrol.entity.WifiListInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
 import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
@@ -38,7 +41,7 @@ public class GetDeviceInfoUtil {
 
     public static void get(UZModuleContext uzModuleContext) {
         Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
-        if (activity == null){
+        if (activity == null) {
             return;
         }
         GetLocationUtil.openLocService();
@@ -93,7 +96,7 @@ public class GetDeviceInfoUtil {
                 Logan.d("----------开启获取数据");
                 DeviceData deviceData = DeviceDataUtil.INSTANCE.getData();
 
-                String infoUnescapeJson = JsonUtil.toJson(deviceData);
+                String infoUnescapeJson = getJsonStr(deviceData);
                 String name = "deviceInfo";
                 try {
                     writeSDFile(name, infoUnescapeJson);
@@ -115,9 +118,38 @@ public class GetDeviceInfoUtil {
 
                 Logan.w("deviceInfo", deviceData);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.DEVICE_INFO, JsonUtil.toJson(deviceData)));
             }
         });
+    }
+
+    private static String getJsonStr(DeviceData deviceData){
+        JSONObject jsonObject = JsonSimpleUtil.objToJsonObj(deviceData);
+
+        DeviceBattery battery = deviceData.getBattery();
+        List<SensorListInfo> sensorList = deviceData.getSensorList();
+        List<WifiListInfo> wifiList = deviceData.getWifiList();
+
+        try {
+            if (battery != null){
+                jsonObject.put("battery", JsonSimpleUtil.objToJsonObj(battery));
+            }
+            if (sensorList != null){
+                jsonObject.put("sensorList", JsonSimpleUtil.listToJsonArray(sensorList));
+            }
+            if (wifiList != null){
+                jsonObject.put("wifiList", JsonSimpleUtil.listToJsonArray(wifiList));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String infoUnescapeJson = jsonObject.toString();
+        Logan.w("infoUnescapeJson", infoUnescapeJson);
+        FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "DeviceData.txt", infoUnescapeJson);
+        EventTrans.getInstance().postEvent(new EventMsg(EventMsg.DEVICE_INFO, infoUnescapeJson));
+
+        return infoUnescapeJson;
     }
 
     public static ArrayList<File> getDownloadFiles() {
