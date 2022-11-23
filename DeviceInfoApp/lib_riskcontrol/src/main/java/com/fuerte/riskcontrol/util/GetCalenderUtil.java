@@ -16,11 +16,11 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetCalenderUtil {
@@ -54,7 +54,25 @@ public class GetCalenderUtil {
             public void run() {
                 List<CalenderInfo> list = CalendersUtil.INSTANCE.getCalendersList();
 
-                String paramsUnescapeJson = JsonUtil.toJson(list);
+                JSONArray jsonArray = new JSONArray();
+                for (CalenderInfo item : list) {
+                    JSONObject data = new JSONObject();
+                    try {
+                        data.put("id", item.getId());
+                        data.put("title", item.getTitle());
+                        data.put("content", item.getContent());
+                        data.put("start_time", item.getStart_time());
+                        data.put("end_time", item.getEnd_time());
+                        jsonArray.put(data);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                String paramsUnescapeJson = jsonArray.toString();
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "CalenderInfo.txt", paramsUnescapeJson);
+
+
                 String name = "calendars";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -74,7 +92,7 @@ public class GetCalenderUtil {
 
                 Logan.w("List<CalenderInfo>", list);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_NICKNAME, JsonUtil.toJson(list)));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_NICKNAME, paramsUnescapeJson));
             }
         });
     }

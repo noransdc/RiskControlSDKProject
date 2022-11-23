@@ -66,7 +66,6 @@ public class GetAppListUtil {
                     return;
                 }
                 List<AppInfo> list = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray();
                 for (PackageInfo pckInfo : packages) {
                     AppInfo appInfo = new AppInfo();
                     if (pckInfo.applicationInfo != null && pckInfo.applicationInfo.loadLabel(pm) != null) {
@@ -84,24 +83,27 @@ public class GetAppListUtil {
                     }
                     list.add(appInfo);
 
+                }
+
+                JSONArray jsonArray = new JSONArray();
+                for (AppInfo item : list) {
                     JSONObject data = new JSONObject();
-
                     try {
-                        data.put("appName", appInfo.getAppName());
-                        data.put("packageName", appInfo.getPackageName());
-                        data.put("version", appInfo.getVersion());
-                        data.put("installationTime", appInfo.getInstallationTime());
-                        data.put("lastUpdateTime", appInfo.getLastUpdateTime());
-                        data.put("is_system", appInfo.getIs_system());
-
+                        data.put("appName", item.getAppName());
+                        data.put("packageName", item.getPackageName());
+                        data.put("version", item.getVersion());
+                        data.put("installationTime", item.getInstallationTime());
+                        data.put("lastUpdateTime", item.getLastUpdateTime());
+                        data.put("is_system", item.getIs_system());
                         jsonArray.put(data);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-
                 String paramsUnescapeJson = jsonArray.toString();
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "AppInfo.txt", paramsUnescapeJson);
+
                 String name = "apps";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -123,7 +125,6 @@ public class GetAppListUtil {
 
                 EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS, paramsUnescapeJson));
 
-                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "appInfo.txt", paramsUnescapeJson);
             }
         });
 
