@@ -7,6 +7,7 @@ import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
 import android.app.Activity;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
+import com.fuerte.riskcontrol.entity.AppInfo;
 import com.fuerte.riskcontrol.entity.SmsInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
@@ -16,6 +17,7 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +58,29 @@ public class GetSmsUtil {
             public void run() {
                 List<SmsInfo> list = SmsUtil.INSTANCE.getSmsList();
 
-                String paramsUnescapeJson = JsonUtil.toJson(list);
+
+                JSONArray jsonArray = new JSONArray();
+                for (SmsInfo item : list) {
+                    JSONObject data = new JSONObject();
+                    try {
+                        data.put("send_mobile", item.getSend_mobile());
+                        data.put("receive_mobile", item.getReceive_mobile());
+                        data.put("sms_content", item.getSms_content());
+                        data.put("sms_type", item.getSms_type());
+                        data.put("send_time", item.getSend_time());
+                        data.put("contactor_name", item.getContactor_name());
+                        data.put("address", item.getAddress());
+                        jsonArray.put(data);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                String paramsUnescapeJson = jsonArray.toString();
+                FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "SmsInfo.txt", paramsUnescapeJson);
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SMS, paramsUnescapeJson));
+
+
                 String name = "smss";
                 try {
                     writeSDFile(name, paramsUnescapeJson);
@@ -76,7 +100,6 @@ public class GetSmsUtil {
 
                 Logan.w("getSmsInfo", list);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.WIFI, JsonUtil.toJson(list)));
             }
         });
 
