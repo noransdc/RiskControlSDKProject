@@ -1,4 +1,4 @@
-package com.fuerte.riskcontrol.threadpool;
+package com.fuerte.riskcontrol.thread;
 
 import android.os.Process;
 
@@ -10,30 +10,26 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 单线程线程池
- * @author Nevio
- * on 2019/4/17
- **/
-public class SingleThreadPool {
 
-    private static SingleThreadPool instance;
+public class CustomThreadPool {
+
+    private static CustomThreadPool instance;
     // 核心线程的数量
-    private final int CORE_POOL_SIZE = 1;
+    private final int CORE_POOL_SIZE = 3;
     // 最大线程数量
-    private final int MAX_POOL_SIZE = 1;
+    private int MAX_POOL_SIZE = 8;
     // 存活时间
-    private final long KEEP_ALIVE_TIME = 0L;
+    private long KEEP_ALIVE_TIME = 3;
     private TimeUnit timeUnit = TimeUnit.MINUTES;
     private ThreadPoolExecutor poolExecutor;
 
-    private SingleThreadPool() {}
+    private CustomThreadPool() {}
 
-    public static SingleThreadPool getInstance() {
+    public static CustomThreadPool getInstance() {
         if (instance == null) {
-            synchronized (SingleThreadPool.class) {
+            synchronized (CustomThreadPool.class) {
                 if (instance == null) {
-                    instance = new SingleThreadPool();
+                    instance = new CustomThreadPool();
                 }
             }
         }
@@ -50,7 +46,7 @@ public class SingleThreadPool {
             new LinkedBlockingDeque<>(),
             threadFactory,
             new ThreadPoolExecutor.AbortPolicy());
-        poolExecutor.allowCoreThreadTimeOut(false);
+        poolExecutor.allowCoreThreadTimeOut(true);
     }
 
     public void execute(Runnable runnable) {

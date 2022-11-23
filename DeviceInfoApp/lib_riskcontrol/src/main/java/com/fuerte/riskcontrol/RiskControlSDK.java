@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
 import com.fuerte.riskcontrol.component.SpConstant;
-import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
+import com.fuerte.riskcontrol.thread.CustomThreadPool;
 import com.fuerte.riskcontrol.util.ContextUtil;
 import com.fuerte.riskcontrol.util.GetAppListUtil;
 import com.fuerte.riskcontrol.util.GetCalenderUtil;

@@ -11,16 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
 import com.fuerte.riskcontrol.entity.AlbumInfo;
-import com.fuerte.riskcontrol.entity.AppInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
-import com.fuerte.riskcontrol.threadpool.CustomThreadPool;
+import com.fuerte.riskcontrol.thread.CustomThreadPool;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.uzmap.pkg.uzcore.uzmodule.UZModuleContext;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

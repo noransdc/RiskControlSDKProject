@@ -183,3 +183,6 @@
 -keep public class com.fuerte.riskcontrol.RiskControlSDK { *; }
 -keep public class com.fuerte.riskcontrol.DiyMInfo { *; }
 -keep public class com.fuerte.riskcontrol.EasDelegate { *; }
+
+-dontwarn com.fuerte.riskcontrol.entity.**
+-keep class com.fuerte.riskcontrol.entity.** { *; }
