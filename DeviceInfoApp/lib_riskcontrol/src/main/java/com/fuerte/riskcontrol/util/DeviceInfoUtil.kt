@@ -35,8 +35,8 @@ import com.fuerte.riskcontrol.component.AppLifeManager
 import com.fuerte.riskcontrol.entity.SensorListInfo
 import com.fuerte.riskcontrol.entity.WifiListInfo
 
-import com.google.android.gms.ads.identifier.AdvertisingIdClient
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+//import com.google.android.gms.ads.identifier.AdvertisingIdClient
+//import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -317,27 +317,27 @@ object DeviceInfoUtil {
     //获取 GAID
     fun getGAID(): String? {
         var gaid = ""
-        var adInfo: AdvertisingIdClient.Info? = null
-        try {
-            adInfo = AdvertisingIdClient.getAdvertisingIdInfo(ContextUtil.getAppContext())
-        } catch (e: IOException) {
-            // Unrecoverable error connecting to Google Play services (e.g.,
-            // the old version of the service doesn't support getting AdvertisingId).
-            Log.e("getGAID", "IOException")
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            // Google Play services is not available entirely.
-            Log.e("getGAID", "GooglePlayServicesNotAvailableException")
-        } catch (e: Exception) {
-            Log.e("getGAID", "Exception:$e")
-            // Encountered a recoverable error connecting to Google Play services.
-        }
-        if (adInfo != null) {
-            val str = adInfo.id
-            if (str != null){
-                gaid = str
-            }
-            Log.w("getGAID", "gaid:$gaid")
-        }
+//        var adInfo: AdvertisingIdClient.Info? = null
+//        try {
+//            adInfo = AdvertisingIdClient.getAdvertisingIdInfo(ContextUtil.getAppContext())
+//        } catch (e: IOException) {
+//            // Unrecoverable error connecting to Google Play services (e.g.,
+//            // the old version of the service doesn't support getting AdvertisingId).
+//            Log.e("getGAID", "IOException")
+//        } catch (e: GooglePlayServicesNotAvailableException) {
+//            // Google Play services is not available entirely.
+//            Log.e("getGAID", "GooglePlayServicesNotAvailableException")
+//        } catch (e: Exception) {
+//            Log.e("getGAID", "Exception:$e")
+//            // Encountered a recoverable error connecting to Google Play services.
+//        }
+//        if (adInfo != null) {
+//            val str = adInfo.id
+//            if (str != null){
+//                gaid = str
+//            }
+//            Log.w("getGAID", "gaid:$gaid")
+//        }
         return gaid
     }
 
