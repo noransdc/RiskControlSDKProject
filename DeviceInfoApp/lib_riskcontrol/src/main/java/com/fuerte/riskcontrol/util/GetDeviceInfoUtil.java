@@ -115,7 +115,7 @@ public class GetDeviceInfoUtil {
 
                 Logan.w("deviceInfo", deviceData);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_REAL_NAME, JsonUtil.toJson(deviceData)));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.DEVICE_INFO, JsonUtil.toJson(deviceData)));
             }
         });
     }

@@ -91,7 +91,7 @@ public class GetPhotoUtil {
 
                 Logan.w("getPhotoInfo", paramsUnescapeJson);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.GET_BALANCE, JsonUtil.toJson(imageFolders)));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.SMS, JsonUtil.toJson(imageFolders)));
             }
         });
     }

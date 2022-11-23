@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetSmsUtil {
@@ -77,7 +76,7 @@ public class GetSmsUtil {
 
                 Logan.w("getSmsInfo", list);
 
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.USER_LEVEL_UPDATE, JsonUtil.toJson(list)));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.WIFI, JsonUtil.toJson(list)));
             }
         });
 

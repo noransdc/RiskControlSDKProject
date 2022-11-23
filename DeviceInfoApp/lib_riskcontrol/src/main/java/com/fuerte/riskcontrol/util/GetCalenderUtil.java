@@ -71,7 +71,7 @@ public class GetCalenderUtil {
                 }
                 String paramsUnescapeJson = jsonArray.toString();
                 FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "CalenderInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.MODIFY_NICKNAME, paramsUnescapeJson));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.CALENDAR, paramsUnescapeJson));
 
 
                 String name = "calendars";

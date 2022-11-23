@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
-import com.fuerte.riskcontrol.entity.AppInfo;
 import com.fuerte.riskcontrol.entity.ContactInfo;
 import com.fuerte.riskcontrol.event.EventMsg;
 import com.fuerte.riskcontrol.event.EventTrans;
@@ -75,7 +74,7 @@ public class GetContactUtil {
                 }
                 String paramsUnescapeJson = jsonArray.toString();
                 FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "ContactInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.ADD_BANK_CARD_SUCCESS, paramsUnescapeJson));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.CONTACT, paramsUnescapeJson));
 
                 String name = "contacts";
                 try {

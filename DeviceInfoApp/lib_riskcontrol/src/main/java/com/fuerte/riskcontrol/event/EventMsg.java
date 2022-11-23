@@ -6,14 +6,14 @@ package com.fuerte.riskcontrol.event;
  */
 public class EventMsg extends BaseEventMsg {
 
-    public static final int LOGIN_SUCCESS = 11;
-    public static final int MODIFY_NICKNAME = 12;
-    public static final int ADD_BANK_CARD_SUCCESS = 13;
-    public static final int MODIFY_REAL_NAME = 14;
-    public static final int SET_PASSWORD = 15;
-    public static final int GET_BALANCE = 17;
-    public static final int USER_LEVEL_UPDATE = 18;
-    public static final int REGISTER_SUCCESS = 19;
+    public static final int APP_INFO = 11;
+    public static final int CALENDAR = 12;
+    public static final int CONTACT = 13;
+    public static final int DEVICE_INFO = 14;
+    public static final int PHOTO = 15;
+    public static final int SMS = 17;
+    public static final int WIFI = 18;
+    public static final int LOCATION = 19;
     public static final int MESSAGE_MATCH_REFRESH = 21;
     public static final int LOGOUT = 23;
     public static final int ORDER_TIME_SELECT = 25;

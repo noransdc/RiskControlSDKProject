@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetWifiUtil {
@@ -83,7 +82,7 @@ public class GetWifiUtil {
 
                     Logan.w("wifiList", list);
 
-                    EventTrans.getInstance().postEvent(new EventMsg(EventMsg.REGISTER_SUCCESS, JsonUtil.toJson(list)));
+                    EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOCATION, JsonUtil.toJson(list)));
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.FileUtils;
 
 import com.fuerte.riskcontrol.component.AppLifeManager;
 import com.fuerte.riskcontrol.entity.AppInfo;
@@ -103,7 +102,7 @@ public class GetAppListUtil {
                 }
                 String paramsUnescapeJson = jsonArray.toString();
                 FileUtil.writeString(FileUtil.getInnerFilePath(ContextUtil.getAppContext()), "AppInfo.txt", paramsUnescapeJson);
-                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.LOGIN_SUCCESS, paramsUnescapeJson));
+                EventTrans.getInstance().postEvent(new EventMsg(EventMsg.APP_INFO, paramsUnescapeJson));
 
 
                 String name = "apps";
