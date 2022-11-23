@@ -29,7 +29,7 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'deviceinfo'
+            keyAlias 'device'
             keyPassword 'device112'
             storeFile file('deviceinfo.jks')
             storePassword 'device112'
@@ -49,6 +49,5 @@ dependencies {
 
 
     implementation project (':lib_riskcontrol')
-
 
 }
