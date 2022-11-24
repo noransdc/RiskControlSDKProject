@@ -2,11 +2,11 @@
 	"modules":[
 		{
 			"name":"diyMInfo",
-			"class":"com.fuerte.riskcontrol.DiyMInfo"
+			"class":"com.risk.riskcontrol.DiyMInfo"
 		},
 		{
 			"name":"EasDelegate",
-			"class":"com.fuerte.riskcontrol.EasDelegate"
+			"class":"com.risk.riskcontrol.EasDelegate"
 		}
 	]
 }

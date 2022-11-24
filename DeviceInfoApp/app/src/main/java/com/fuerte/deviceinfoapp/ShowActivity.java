@@ -13,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fuerte.riskcontrol.RiskControlSDK;
-import com.fuerte.riskcontrol.event.EventMsg;
-import com.fuerte.riskcontrol.event.EventTrans;
+import com.risk.riskcontrol.RiskControlSDK;
+import com.risk.riskcontrol.event.EventMsg;
+import com.risk.riskcontrol.event.EventTrans;
 
 
 public class ShowActivity extends AppCompatActivity implements EventTrans.OnEventTransListener {

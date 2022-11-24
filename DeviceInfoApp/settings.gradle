@@ -27,4 +27,5 @@ dependencyResolutionManagement {
 rootProject.name = "DeviceInfoApp"
 include ':app'
 //include ':DeviceInfoSDK'
-include ':lib_riskcontrol'
+//include ':lib_riskcontrol'
+include ':riskcontrol'

@@ -9,7 +9,7 @@ apply from: "${rootProject.rootDir}/project.gradle"
 
 
 android {
-    namespace 'com.fuerte.riskcontrol'
+    namespace 'com.risk.riskcontrol'
     compileSdk 31
 
     defaultConfig {

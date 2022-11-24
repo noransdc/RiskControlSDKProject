@@ -1,16 +1,16 @@
-package com.fuerte.riskcontrol.util;
+package com.risk.riskcontrol.util;
 
-import static com.fuerte.riskcontrol.RiskControlSDK.realPath;
-import static com.fuerte.riskcontrol.RiskControlSDK.sendMessage;
-import static com.fuerte.riskcontrol.RiskControlSDK.writeSDFile;
+import static com.risk.riskcontrol.RiskControlSDK.realPath;
+import static com.risk.riskcontrol.RiskControlSDK.sendMessage;
+import static com.risk.riskcontrol.RiskControlSDK.writeSDFile;
 
 import android.app.Activity;
 
-import com.fuerte.riskcontrol.component.AppLifeManager;
-import com.fuerte.riskcontrol.entity.WifiListInfo;
-import com.fuerte.riskcontrol.event.EventMsg;
-import com.fuerte.riskcontrol.event.EventTrans;
-import com.fuerte.riskcontrol.thread.CustomThreadPool;
+import com.risk.riskcontrol.component.AppLifeManager;
+import com.risk.riskcontrol.entity.WifiListInfo;
+import com.risk.riskcontrol.event.EventMsg;
+import com.risk.riskcontrol.event.EventTrans;
+import com.risk.riskcontrol.thread.CustomThreadPool;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;

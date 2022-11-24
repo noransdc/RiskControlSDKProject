@@ -1,4 +1,4 @@
-package com.fuerte.riskcontrol.util;
+package com.risk.riskcontrol.util;
 
 import android.app.Application;
 import android.content.Context;

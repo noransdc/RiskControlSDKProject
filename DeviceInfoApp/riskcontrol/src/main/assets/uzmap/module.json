@@ -1,0 +1,12 @@
+{
+	"modules":[
+		{
+			"name":"riskcontrol",
+			"class":"com.risk.riskcontrol.DiyMInfo"
+		},
+		{
+			"name":"EasDelegate",
+			"class":"com.risk.riskcontrol.EasDelegate"
+		}
+	]
+}

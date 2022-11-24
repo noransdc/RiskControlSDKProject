@@ -2,7 +2,7 @@ package com.fuerte.deviceinfoapp;
 
 import android.app.Application;
 
-import com.fuerte.riskcontrol.RiskControlSDK;
+import com.risk.riskcontrol.RiskControlSDK;
 
 public class MainApp extends Application {
 
