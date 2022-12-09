@@ -1,8 +1,8 @@
 package com.risk.riskcontrol.util;
 
-import static com.risk.riskcontrol.RiskControlSDK.realPath;
-import static com.risk.riskcontrol.RiskControlSDK.sendMessage;
-import static com.risk.riskcontrol.RiskControlSDK.writeSDFile;
+import static com.risk.riskcontrol.RiskControl.realPath;
+import static com.risk.riskcontrol.RiskControl.sendMessage;
+import static com.risk.riskcontrol.RiskControl.writeSDFile;
 
 import android.app.Activity;
 
@@ -11,7 +11,6 @@ import com.risk.riskcontrol.entity.WifiListInfo;
 import com.risk.riskcontrol.event.EventMsg;
 import com.risk.riskcontrol.event.EventTrans;
 import com.risk.riskcontrol.thread.CustomThreadPool;
-import com.risk.riskcontrol.util.DeviceInfoUtil;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;

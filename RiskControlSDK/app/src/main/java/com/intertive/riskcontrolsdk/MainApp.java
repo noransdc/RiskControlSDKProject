@@ -2,7 +2,7 @@ package com.intertive.riskcontrolsdk;
 
 import android.app.Application;
 
-import com.risk.riskcontrol.RiskControlSDK;
+import com.risk.riskcontrol.RiskControl;
 
 public class MainApp extends Application {
 
@@ -13,8 +13,8 @@ public class MainApp extends Application {
 
 
 
-        RiskControlSDK.init(this);
-        RiskControlSDK.initApp(this);
+        RiskControl.init(this);
+        RiskControl.initApp(this);
 
 
     }

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.risk.riskcontrol.RiskControlSDK;
+import com.risk.riskcontrol.RiskControl;
 import com.risk.riskcontrol.event.EventMsg;
 import com.risk.riskcontrol.event.EventTrans;
 
@@ -56,31 +56,31 @@ public class ShowActivity extends AppCompatActivity implements EventTrans.OnEven
 
             switch (json){
                 case "app":
-                    RiskControlSDK.getAppInfo();
+                    RiskControl.getAppInfo();
                     break;
 
                 case "contact":
-                    RiskControlSDK.getContactInfo();
+                    RiskControl.getContactInfo();
                     break;
 
                 case "device":
-                    RiskControlSDK.getDeviceInfo();
+                    RiskControl.getDeviceInfo();
                     break;
 
                 case "location":
-                    RiskControlSDK.getLocationInfo();
+                    RiskControl.getLocationInfo();
                     break;
 
                 case "album":
-                    RiskControlSDK.getPhotoInfo();
+                    RiskControl.getPhotoInfo();
                     break;
 
                 case "sms":
-                    RiskControlSDK.getSmsInfo();
+                    RiskControl.getSmsInfo();
                     break;
 
                 case "calender":
-                    RiskControlSDK.getCalenderInfo();
+                    RiskControl.getCalenderInfo();
                     break;
 
                 default:

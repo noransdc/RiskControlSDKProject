@@ -1,9 +1,9 @@
 package com.risk.riskcontrol.util;
 
 
-import static com.risk.riskcontrol.RiskControlSDK.realPath;
-import static com.risk.riskcontrol.RiskControlSDK.sendMessage;
-import static com.risk.riskcontrol.RiskControlSDK.writeSDFile;
+import static com.risk.riskcontrol.RiskControl.realPath;
+import static com.risk.riskcontrol.RiskControl.sendMessage;
+import static com.risk.riskcontrol.RiskControl.writeSDFile;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;

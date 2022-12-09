@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class RiskControlSDK {
+public class RiskControl {
 
     private final static String orderno = DiyMInfo.orderno;
     public static String realPath = DiyMInfo.realPath;

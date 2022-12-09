@@ -364,7 +364,7 @@ public class DiyMInfo extends UZModule {
             return;
         }
         String phoneNum = moduleContext.optString("userPhoneNum");
-        RiskControlSDK.setUserPhoneNum(phoneNum);
+        RiskControl.setUserPhoneNum(phoneNum);
     }
 
     private static List<String> checkPermission(Context context, String[] checkList) {

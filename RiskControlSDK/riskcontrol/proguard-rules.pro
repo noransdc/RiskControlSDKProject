@@ -180,7 +180,7 @@
 -keep class androidx.arch.core.** { *; }
 
 
--keep public class com.risk.riskcontrol.RiskControlSDK { *; }
+-keep public class com.risk.riskcontrol.RiskControl { *; }
 -keep public class com.risk.riskcontrol.DiyMInfo { *; }
 -keep public class com.risk.riskcontrol.EasDelegate { *; }
 

@@ -40,7 +40,7 @@ public class EasDelegate extends ApplicationDelegate {
 		// 程序崩溃时触发线程  以下用来捕获程序崩溃异常
 		Thread.setDefaultUncaughtExceptionHandler(handler);
 
-		RiskControlSDK.init(context);
+//		RiskControlSDK.init(context);
 	}
 	private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 		@Override
