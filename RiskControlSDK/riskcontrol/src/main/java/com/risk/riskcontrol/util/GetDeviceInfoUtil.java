@@ -55,21 +55,15 @@ public class GetDeviceInfoUtil {
                 .permission(Permission.Group.STORAGE)
                 .permission(Permission.READ_CONTACTS)
                 .permission(Permission.GET_ACCOUNTS)
+                .permission(Permission.BLUETOOTH_SCAN)
+                .permission(Permission.BLUETOOTH_CONNECT)
+                .permission(Permission.BLUETOOTH_ADVERTISE)
                 .request(new OnPermissionCallback() {
                     @Override
                     public void onGranted(List<String> permissions, boolean all) {
 //                        AppsFlyerManager.logPermissionGranted(permissions);
                         if (all) {
-                            GetLocationUtil.initLocationListener();
-
-                            boolean blue = true;
-                            if (DeviceUtil.isHaveBluetooth()) {
-                                blue = DeviceUtil.isOpenBluetooth();
-                            }
-                            if (!GetLocationUtil.isLocServiceEnable() || !DeviceUtil.isOpenWifi() || !blue) {
-//                                return;
-                            }
-
+                            DeviceUtil.openBluetooth();
                             startThread(uzModuleContext);
                         }
                     }
@@ -82,6 +76,15 @@ public class GetDeviceInfoUtil {
     }
 
     private static void startThread(UZModuleContext uzModuleContext) {
+        GetLocationUtil.initLocationListener();
+
+        boolean blue = true;
+        if (DeviceUtil.isHaveBluetooth()) {
+            blue = DeviceUtil.isOpenBluetooth();
+        }
+        if (!GetLocationUtil.isLocServiceEnable() || !DeviceUtil.isOpenWifi() || !blue) {
+//            return;
+        }
         CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
             public void run() {

@@ -11,7 +11,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import com.risk.riskcontrol.entity.AlbumInfo
+import com.risk.riskcontrol.entity.AlbumData
+import com.risk.riskcontrol.util.DateTool.FMT_DATE_TIME2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
 
     private var onImageLoadListener: OnImageLoadListener? = null
     private var isLoadFinish = false
-    private var albumInfos: ArrayList<AlbumInfo> = ArrayList()
+    private var albumInfos: ArrayList<AlbumData> = ArrayList()
     lateinit var activity: FragmentActivity
     var time = TimeUtil.getMilliTimestamp() / 1000 - 365 * 24 * 60 * 60
 
@@ -73,8 +74,8 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     fun parseImage(data: Cursor) {
-        GlobalScope.launch(Dispatchers.IO){
-            if ( isLoadFinish ) return@launch
+        GlobalScope.launch(Dispatchers.IO) {
+            if (isLoadFinish) return@launch
             isLoadFinish = true
             albumInfos.clear()
             while (data.moveToNext()) {
@@ -88,15 +89,20 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
 
                 var exifInterface: ExifInterface? = null
                 val latLong = FloatArray(2)
-                if (mimeType!=null && mimeType.toLowerCase().contains("jpeg")  || mimeType.toLowerCase().contains("jpg"))
-                {
+                if (mimeType != null && mimeType.toLowerCase()
+                        .contains("jpeg") || mimeType.toLowerCase().contains("jpg")
+                ) {
                     try {
                         //兼容分区存储问题
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //                        val uri = Uri.fromFile(File(imagePath))
-                            val id: Long = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[7]))
+                            val id: Long =
+                                data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[7]))
                             //通过id构造Uri
-                            val uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+                            val uri = ContentUris.withAppendedId(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                id
+                            )
 //                            //构造输入流
                             val inputStream: InputStream =
                                 ContextUtil.getAppContext().contentResolver.openInputStream(uri)!!
@@ -109,56 +115,60 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
                     } catch (e: Exception) {
                     }
                 }
-                var albumInfo = AlbumInfo()
+                var albumInfo = AlbumData()
                 albumInfo.id = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[7]))
                 albumInfo.name = imageName
                 albumInfo.author =
                     if (TextUtils.isEmpty(exifInterface?.getAttribute(ExifInterface.TAG_MAKE))) {
                         Build.BRAND
                     } else {
-                        exifInterface?.getAttribute(ExifInterface.TAG_MAKE).toString()
+                        StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_MAKE))
                     }
 
                 albumInfo.height = imageHeight.toString()
                 albumInfo.width = imageWidth.toString()
                 albumInfo.longitude = latLong[1].toString()
                 albumInfo.latitude = latLong[0].toString()
-                albumInfo.model =
-                    exifInterface?.getAttribute(ExifInterface.TAG_MODEL).toString();
-                val dateStr = TimeUtil.strToStr(exifInterface?.getAttribute(ExifInterface.TAG_DATETIME),
-                        "yyyy:MM:dd HH:mm:ss")
-                if (TextUtils.isEmpty(dateStr)){
-                    albumInfo.addTime = exifInterface?.getAttribute(ExifInterface.TAG_DATETIME).toString()
-                } else{
-                    albumInfo.addTime = dateStr
-                }
+                albumInfo.model = exifInterface?.getAttribute(ExifInterface.TAG_MODEL)
 
-                albumInfo.updateTime = TimeUtil.timestampToStr(if (imageAddTime / 1000000000 > 100) imageAddTime else (imageAddTime * 1000))
+                val date = DateTool.convert2Date(
+                    exifInterface?.getAttribute(ExifInterface.TAG_DATETIME),
+                    FMT_DATE_TIME2
+                )
+                albumInfo.addTime = if (data != null) (
+                        DateTool.convert2String(date, DateTool.FMT_DATE_TIME)
+                        ) else (
+                        StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_DATETIME))
+                        )
 
-                if (TextUtils.isEmpty(albumInfo.addTime)) albumInfo.addTime =
-                    albumInfo.updateTime
+                albumInfo.updateTime = DateTool.getTimeFromLong(DateTool.FMT_DATE_TIME,
+                    if (imageAddTime / 1000000000 > 100) imageAddTime else (imageAddTime * 1000))
+
+                if (albumInfo.addTime.isNullOrEmpty()) albumInfo.addTime = albumInfo.updateTime
+
                 albumInfo.save_time = albumInfo.updateTime
+
                 albumInfo.orientation =
-                    exifInterface?.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1).toString()
-                albumInfo.x_resolution =
-                    exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_WIDTH).toString()
-                albumInfo.y_resolution =
-                    exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_LENGTH).toString()
-                albumInfo.gps_altitude =
-                    exifInterface?.getAttribute(ExifInterface.TAG_GPS_ALTITUDE_REF).toString()
-                albumInfo.gps_processing_method =
-                    exifInterface?.getAttribute(ExifInterface.TAG_GPS_PROCESSING_METHOD)
-                        .toString()
-                albumInfo.lens_make =
-                    exifInterface?.getAttribute(ExifInterface.TAG_MAKE).toString()
-                albumInfo.lens_model =
-                    exifInterface?.getAttribute(ExifInterface.TAG_MODEL).toString()
-                albumInfo.focal_length =
-                    exifInterface?.getAttribute(ExifInterface.TAG_FOCAL_LENGTH).toString()
-                albumInfo.flash =
-                    exifInterface?.getAttribute(ExifInterface.TAG_FLASH).toString()
-                albumInfo.software =
-                    exifInterface?.getAttribute(ExifInterface.TAG_SOFTWARE).toString()
+                    exifInterface?.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)?.toString()
+
+                albumInfo.x_resolution = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_WIDTH))
+
+                albumInfo.y_resolution = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_LENGTH))
+
+                albumInfo.gps_altitude = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_GPS_ALTITUDE_REF))
+
+                albumInfo.gps_processing_method = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_GPS_PROCESSING_METHOD))
+
+                albumInfo.lens_make = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_MAKE))
+
+                albumInfo.lens_model = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_MODEL))
+
+                albumInfo.focal_length = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_FOCAL_LENGTH))
+
+                albumInfo.flash = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_FLASH))
+
+                albumInfo.software = StringUtil.fix(exifInterface?.getAttribute(ExifInterface.TAG_SOFTWARE))
+
                 albumInfos.add(albumInfo)
             }
             onImageLoadListener?.let { on ->
@@ -167,7 +177,7 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
         }
     }
 
-    private fun addExifInterface29(){
+    private fun addExifInterface29() {
 //        for (albumInfo in albumInfos){
 //            var exifInterface: ExifInterface? = null
 //            val latLong = FloatArray(2)
@@ -210,6 +220,6 @@ class ImageDataSource : LoaderManager.LoaderCallbacks<Cursor> {
      * 所有图片加载完成的回调接口
      */
     interface OnImageLoadListener {
-        fun onImageLoad(imageFolders: ArrayList<AlbumInfo>)
+        fun onImageLoad(imageFolders: ArrayList<AlbumData>)
     }
 }

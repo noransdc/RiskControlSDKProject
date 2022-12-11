@@ -132,7 +132,7 @@ public class GetLocationUtil {
                                 } else {
                                     locationInfo.setLocation(address.getFeatureName());
                                 }
-                                if (address.getCountryName() == null){
+                                if (address.getCountryName() == null || "null".equals(address.getCountryName())){
                                     locationInfo.setGps_address_country("");
                                 } else {
                                     locationInfo.setGps_address_country(address.getCountryName());

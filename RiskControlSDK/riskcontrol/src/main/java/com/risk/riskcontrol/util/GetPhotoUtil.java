@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.risk.riskcontrol.component.AppLifeManager;
-import com.risk.riskcontrol.entity.AlbumInfo;
+import com.risk.riskcontrol.entity.AlbumData;
 import com.risk.riskcontrol.event.EventMsg;
 import com.risk.riskcontrol.event.EventTrans;
 import com.risk.riskcontrol.thread.CustomThreadPool;
@@ -35,8 +35,30 @@ public class GetPhotoUtil {
             return;
         }
         XXPermissions.with(activity)
-                .permission(Permission.Group.STORAGE)
                 .permission(Permission.READ_PHONE_STATE)
+                .request(new OnPermissionCallback() {
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        if (all){
+                            request(uzModuleContext);
+                        }
+                    }
+
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        sendMessage(uzModuleContext, false, 0, "not READ_EXTERNAL_STORAGE or CAMERA permission", "getAlbums", true);
+                    }
+                });
+
+    }
+
+    private static void request(UZModuleContext uzModuleContext){
+        Activity activity = AppLifeManager.getInstance().getTaskTopActivity();
+        if (activity == null) {
+            return;
+        }
+        XXPermissions.with(activity)
+                .permission(Permission.Group.STORAGE)
                 .permission(Permission.ACCESS_MEDIA_LOCATION)
                 .request(new OnPermissionCallback() {
                     @Override
@@ -45,7 +67,7 @@ public class GetPhotoUtil {
 //                            ImageDataSource imageDataSource = new ImageDataSource();
                             imageDataSource.setOnImageLoadListener(new ImageDataSource.OnImageLoadListener() {
                                 @Override
-                                public void onImageLoad(@NonNull ArrayList<AlbumInfo> imageFolders) {
+                                public void onImageLoad(@NonNull ArrayList<AlbumData> imageFolders) {
                                     imageDataSource.unOnImageLoadListener();
                                     startThread(imageFolders, uzModuleContext);
                                 }
@@ -62,12 +84,11 @@ public class GetPhotoUtil {
                         sendMessage(uzModuleContext, false, 0, "not READ_EXTERNAL_STORAGE or CAMERA permission", "getAlbums", true);
                     }
                 });
-
     }
 
     private static ImageDataSource imageDataSource = new ImageDataSource();
 
-    private static void startThread(ArrayList<AlbumInfo> list, UZModuleContext uzModuleContext) {
+    private static void startThread(ArrayList<AlbumData> list, UZModuleContext uzModuleContext) {
         CustomThreadPool.getInstance().execute(new Runnable() {
             @Override
             public void run() {

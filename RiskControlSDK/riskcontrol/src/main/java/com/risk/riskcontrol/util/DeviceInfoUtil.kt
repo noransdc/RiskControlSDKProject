@@ -52,6 +52,15 @@ import java.util.*
 @SuppressLint("MissingPermission")
 object DeviceInfoUtil {
 
+    fun getKernelVersion(): String? {
+        try {
+            return System.getProperty("os.version")
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+
     fun getDeviceName(): String? {
         return Settings.Secure.getString(
             ContextUtil.getAppContext().contentResolver,

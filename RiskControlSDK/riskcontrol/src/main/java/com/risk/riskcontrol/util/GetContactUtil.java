@@ -90,7 +90,6 @@ public class GetContactUtil {
             Cursor cursor = ContextUtil.getAppContext().getContentResolver().query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
             while (cursor.moveToNext()) {
-                ContactInfo contactInfo = new ContactInfo();
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 String time = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_LAST_UPDATED_TIMESTAMP));
@@ -113,13 +112,22 @@ public class GetContactUtil {
                     e.printStackTrace();
                 }
 
-                contactInfo.setMobile(phoneStr);
-                contactInfo.setName(name);
-                contactInfo.setLastUpdateTime(timeStr);
-                contactInfo.setCreate_time(timeStr);
-
-                list.add(contactInfo);
-
+                boolean isContain = false;
+                for (ContactInfo item : list) {
+                    if (StringUtil.equal(phoneStr, item.getMobile())
+                            && StringUtil.equal(name, item.getName())){
+                        isContain = true;
+                        break;
+                    }
+                }
+                if (!isContain){
+                    ContactInfo contactInfo = new ContactInfo();
+                    contactInfo.setMobile(phoneStr);
+                    contactInfo.setName(name);
+                    contactInfo.setLastUpdateTime(timeStr);
+                    contactInfo.setRecord_create_time(timeStr);
+                    list.add(contactInfo);
+                }
             }
             cursor.close();
 

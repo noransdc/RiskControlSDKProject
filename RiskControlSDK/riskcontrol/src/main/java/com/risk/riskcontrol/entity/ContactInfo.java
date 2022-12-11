@@ -5,7 +5,7 @@ public class ContactInfo {
     private String name = "";
     private String mobile = "";
     private String lastUpdateTime = "";//上次更新时间
-    private String create_time = "";
+    private String record_create_time = "";
 
     public String getName() {
         return name;
@@ -31,12 +31,12 @@ public class ContactInfo {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public String getCreate_time() {
-        return create_time;
+    public String getRecord_create_time() {
+        return record_create_time;
     }
 
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
+    public void setRecord_create_time(String record_create_time) {
+        this.record_create_time = record_create_time;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ContactInfo {
                 "name='" + name + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", lastUpdateTime=" + lastUpdateTime +
-                ", create_time='" + create_time + '\'' +
+                ", record_create_time='" + record_create_time + '\'' +
                 '}';
     }
 }

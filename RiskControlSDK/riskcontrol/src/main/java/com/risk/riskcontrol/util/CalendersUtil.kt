@@ -9,8 +9,8 @@ object CalendersUtil {
     fun getCalendersList(): ArrayList<CalenderInfo> {
         var calendersInfoBeans = ArrayList<CalenderInfo>()
         val eventCursor: Cursor? = ContextUtil.getAppContext().contentResolver.query(
-                Uri.parse("content://com.android.calendar/events"), null,
-                null, null, null
+            Uri.parse("content://com.android.calendar/events"), null,
+            null, null, null
         )
         try {
             eventCursor?.let {

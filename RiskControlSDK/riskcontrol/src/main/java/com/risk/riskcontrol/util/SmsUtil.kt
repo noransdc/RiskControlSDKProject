@@ -20,40 +20,43 @@ import java.util.*
 object SmsUtil {
     fun getSmsList(): ArrayList<SmsInfo> {
         var smsBeans = ArrayList<SmsInfo>()
-        val userPhoneNum = SpConstant.getPhoneNum(ContextUtil.getAppContext())
+        var old = TimeUtil.getMilliTimestamp()
+//        LogUtils.d("-----------开始")
         try {
             val time = TimeUtil.getMilliTimestamp() - 365L * 24 * 60 * 60 * 1000
             val cur = ContextUtil.getAppContext().contentResolver.query(
-                    Uri.parse("content://sms"), arrayOf(
+                Uri.parse("content://sms"), arrayOf(
                     Telephony.Sms.ADDRESS,
                     Telephony.Sms.TYPE,
                     Telephony.Sms.DATE,
                     Telephony.Sms.BODY,
                     Telephony.Sms.SUBSCRIPTION_ID
-            ), Telephony.Sms.DATE + " > " + time, null, "date desc"
+                ), Telephony.Sms.DATE + " > " + time, null, "date desc"
             )
             if (cur != null) {
                 while (cur.moveToNext()) {
-                    var address = cur.getString(0)
+                    var address =cur.getString(0)
                     var type = cur.getInt(1)
                     var date = cur.getLong(2)
                     var body = cur.getString(3)
+                    var subscriptionId = cur.getInt(4)
                     var smsBean = SmsInfo()
                     smsBean.address = address
-                    smsBean.send_mobile = if (type == 1) {
+                    smsBean.send_mobile = if (type ==1){
                         address
-                    } else {
-                        userPhoneNum
+                    }else{
+                        SpConstant.getPhoneNum(ContextUtil.getAppContext())
                     }
-                    smsBean.receive_mobile = if (type == 1) {
-                        userPhoneNum
-                    } else {
+                    smsBean.receive_mobile = if (type == 1){
+                        SpConstant.getPhoneNum(ContextUtil.getAppContext())
+
+                    }else{
                         address
                     }
                     smsBean.sms_content = body
-                    smsBean.sms_type = if (type == 1) {
+                    smsBean.sms_type = if (type == 1){
                         "20"
-                    } else {
+                    }else{
                         "10"
                     }
                     smsBean.send_time = TimeUtil.timestampToStr(date)
@@ -62,34 +65,36 @@ object SmsUtil {
                 cur.close()
                 getContactName(smsBeans)
             }
-        } catch (e: Exception) {
+        }catch (e:Exception){
             e.printStackTrace()
         }
+        var now = TimeUtil.getMilliTimestamp()
+//        LogUtils.d("-----------结束${now - old}")
         return smsBeans
     }
 
-    private fun getContactName(smsBeans: ArrayList<SmsInfo>) {
+    private fun getContactName(smsBeans:ArrayList<SmsInfo>){
         try {
             var contactInfoList = GetContactUtil.getContactInfoList()
-            for (smsBean in smsBeans) {
-                for (contacts1 in contactInfoList) {
-                    if (smsBean.address == contacts1.mobile) {
+            for (smsBean in smsBeans){
+                for (contacts1 in contactInfoList){
+                    if (smsBean.address == contacts1.mobile){
                         smsBean.contactor_name = contacts1.name
                         continue
                     }
                 }
-                if (TextUtils.isEmpty(smsBean.contactor_name)) {
+                if (TextUtils.isEmpty(smsBean.contactor_name)){
                     smsBean.contactor_name = smsBean.address
                 }
             }
-        } catch (e: java.lang.Exception) {
+        }catch (e:java.lang.Exception){
             e.printStackTrace()
         }
     }
 
-    private fun repetition(smsBeans: ArrayList<SmsInfo>, smsBeans1: ArrayList<SmsInfo>): ArrayList<SmsInfo> {
-        for (smsBean in smsBeans) {
-            for (smsBean1 in smsBeans1) {
+    private fun repetition(smsBeans:ArrayList<SmsInfo>, smsBeans1:ArrayList<SmsInfo>):ArrayList<SmsInfo>{
+        for (smsBean in smsBeans){
+            for (smsBean1 in smsBeans1){
                 if (smsBean.equalsAddress(smsBean1)) {
                     smsBean.contactor_name = smsBean1.contactor_name
                     continue
@@ -102,7 +107,9 @@ object SmsUtil {
     private fun getContactName(phoneNumber: String): String? {
         try {
             val cursor: Cursor? = ContextUtil.getAppContext().contentResolver
-                    .query(Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)), arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME), null, null, null)
+                .query(Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
+                    , arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+                    , null, null, null)
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     val nameIdx = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME)
@@ -111,7 +118,7 @@ object SmsUtil {
                     return name
                 }
             }
-        } catch (e: java.lang.Exception) {
+        }catch (e:java.lang.Exception){
             e.printStackTrace()
         }
         return phoneNumber
@@ -143,7 +150,7 @@ object SmsUtil {
      */
     fun getUniquePsuedoID(): String? {
         val m_szDevIDShort =
-                "35" + Build.BOARD.length % 10 + Build.BRAND.length % 10 + Build.CPU_ABI.length % 10 + Build.DEVICE.length % 10 + Build.DISPLAY.length % 10 + Build.HOST.length % 10 + Build.ID.length % 10 + Build.MANUFACTURER.length % 10 + Build.MODEL.length % 10 + Build.PRODUCT.length % 10 + Build.TAGS.length % 10 + Build.TYPE.length % 10 + Build.USER.length % 10
+            "35" + Build.BOARD.length % 10 + Build.BRAND.length % 10 + Build.CPU_ABI.length % 10 + Build.DEVICE.length % 10 + Build.DISPLAY.length % 10 + Build.HOST.length % 10 + Build.ID.length % 10 + Build.MANUFACTURER.length % 10 + Build.MODEL.length % 10 + Build.PRODUCT.length % 10 + Build.TAGS.length % 10 + Build.TYPE.length % 10 + Build.USER.length % 10
         var serial: String? = null
         try {
             serial = Build::class.java.getField("SERIAL")[null].toString()
@@ -169,30 +176,30 @@ object SmsUtil {
         simInfo.mSimSlotIndex = index
         try {
             simInfo.mImei =
-                    getReflexMethodWithId("getDeviceId", simInfo.mSimSlotIndex.toString())
+                getReflexMethodWithId("getDeviceId", simInfo.mSimSlotIndex.toString())
             //slotId,比较准确
             simInfo.mImsi = getReflexMethodWithId(
-                    "getSubscriberId",
-                    simInfo.mSimSlotIndex.toString()
+                "getSubscriberId",
+                simInfo.mSimSlotIndex.toString()
             )
             //subId,很不准确
             simInfo.mCarrierName = getReflexMethodWithId(
-                    "getSimOperatorNameForPhone",
-                    simInfo.mSimSlotIndex.toString()
+                "getSimOperatorNameForPhone",
+                simInfo.mSimSlotIndex.toString()
             )
             //PhoneId，基本准确
             simInfo.mCountryIso = getReflexMethodWithId(
-                    "getSimCountryIso",
-                    simInfo.mSimSlotIndex.toString()
+                "getSimCountryIso",
+                simInfo.mSimSlotIndex.toString()
             )
             //subId，很不准确
             simInfo.mIccId = getReflexMethodWithId(
-                    "getSimSerialNumber",
-                    simInfo.mSimSlotIndex.toString()
+                "getSimSerialNumber",
+                simInfo.mSimSlotIndex.toString()
             )
             //subId，很不准确
             simInfo.mNumber =
-                    getReflexMethodWithId("getLine1Number", simInfo.mSimSlotIndex.toString())
+                getReflexMethodWithId("getLine1Number", simInfo.mSimSlotIndex.toString())
             //subId，很不准确
         } catch (ignored: MethodNotFoundException) {
         }
@@ -246,7 +253,7 @@ object SmsUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             try {
                 val mSubscriptionManager = ContextUtil.getAppContext()
-                        .getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+                    .getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
                 if (mSubscriptionManager != null) {
                     count = mSubscriptionManager.activeSubscriptionInfoCountMax
                     return count
